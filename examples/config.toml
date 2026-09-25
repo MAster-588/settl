@@ -1,0 +1,38 @@
+# myapp configuration.
+# Written on first run to match rust default values; then left to the user to edit.
+# Any invalid edit will result in an error while any missing non-required field will be filled in with the rust default value.
+
+# REQUIRED — the editor command to launch. Loading fails with "missing field" if absent.
+editor-cmd = "vim"
+
+# Editor tab width in columns.
+tab-width = 4
+
+# UI palette. One of: dark, light, auto.
+# theme-mode = "dark" # Commented out -> missing -> This will use rust default 'auto'
+
+# Theme colors. Hex: #rrggbb or #rrggbbaa ('#' required, case-insensitive).
+[theme]
+base = "#1e1e2e"   # window background
+text = "#cdd6f4"   # primary text
+accent = "#cba6f7" # selection / highlight
+
+# Keyboard shortcuts. Format: "[Mods+]Key"
+#   Mods: Ctrl, Shift, Alt, Meta (any order, case-insensitive).
+#   Shift is an ordinary modifier: "r" and "Shift+r" differ.
+#
+# Global binding — active in every context:
+[keys]
+quit = "Ctrl+q"
+
+# Editor context. Some actions accept multiple chords (a list of alternatives).
+[keys.editor]
+save = "Ctrl+s"
+complete = ["Tab", "Ctrl+Space"]
+find = "Ctrl+f"
+
+# Terminal context. "Ctrl+f" is reused here and won't clash with the editor — contexts are
+# checked separately.
+[keys.terminal]
+clear = "Ctrl+l"
+find = "Ctrl+f"

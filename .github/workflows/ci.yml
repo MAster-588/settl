@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / ${{ matrix.rust }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # `config_path` resolves differently per platform, so all three are worth running.
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        rust: [stable]
+        include:
+          # MSRV — keep in sync with `rust-version` in Cargo.toml.
+          - os: ubuntu-latest
+            rust: "1.88"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt, clippy
+      - run: cargo fmt --check
+      - run: cargo clippy --all-targets -- -D warnings
+      # `--all-targets` covers examples (where a `#[cfg(test)]` block would otherwise never run)
+      # but skips doc-tests, so run those separately.
+      - run: cargo test --all-targets
+      - run: cargo test --doc
